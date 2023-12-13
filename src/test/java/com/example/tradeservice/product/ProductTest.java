@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductTest {
 
     @Test
-    void constructor_returnNewProduct_ForValidParams() {
+    void constructor_returnsNewProduct_ForValidParams() {
         // given when
         Product product = new Product(1, "Mark");
         // then

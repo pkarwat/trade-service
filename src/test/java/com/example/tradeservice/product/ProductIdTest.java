@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductIdTest {
 
     @Test
-    void constructor_createNewProductId_whenParamIsValid() {
+    void constructor_createsNewProductId_whenParamIsValid() {
         // given when
         ProductId productId = new ProductId(1);
         // then
@@ -16,7 +16,7 @@ class ProductIdTest {
     }
 
     @Test
-    void constructor_throwIllegalArgumentException_whenParamIsNegative() {
+    void constructor_throwsIllegalArgumentException_whenParamIsNegative() {
         // when then
         assertThrows(
                 IllegalArgumentException.class,
