@@ -1,7 +1,16 @@
 # Trade Enricher
-Service allows to enrich input collection of trade with product data.
+Service allows to enrich input trades collection with products data.
 
+# Local run
+```
+mvn clean install
+```
 
+Run app.
+
+To verify if app is up and running, send request to healthcheck using: `docs/management_api.http`. 
+
+# WIP
 Request:
 curl --request POST --data @trade.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv'
 http://server.com/api/v1/enrich
