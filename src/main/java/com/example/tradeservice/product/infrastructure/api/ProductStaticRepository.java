@@ -1,7 +1,10 @@
 package com.example.tradeservice.product.infrastructure.api;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class ProductStaticRepository implements ProductRepositoryApi {
 
     @Override

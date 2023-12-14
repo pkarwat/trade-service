@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ProductApi {
 
-    List<ProductDto> match(MatchTradesCommand command);
+    List<MatchedTradeDto> match(MatchTradesCommand command);
 
 }

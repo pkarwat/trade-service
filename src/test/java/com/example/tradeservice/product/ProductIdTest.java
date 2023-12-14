@@ -1,5 +1,6 @@
 package com.example.tradeservice.product;
 
+import com.example.tradeservice.shared.ProductId;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

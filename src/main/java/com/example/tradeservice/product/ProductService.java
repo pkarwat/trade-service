@@ -2,17 +2,29 @@ package com.example.tradeservice.product;
 
 import com.example.tradeservice.product.api.MatchTradesCommand;
 import com.example.tradeservice.product.api.ProductApi;
-import com.example.tradeservice.product.api.ProductDto;
-import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.stereotype.Component;
+import com.example.tradeservice.product.api.MatchedTradeDto;
+import com.example.tradeservice.product.infrastructure.api.ProductDao;
+import com.example.tradeservice.product.infrastructure.api.ProductRepositoryApi;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
-public class ProductService implements ProductApi {
+@Service
+class ProductService implements ProductApi {
+
+    //@Autowired    *Autowired not recommended for field
+    private final ProductRepositoryApi repository;
+
+    public ProductService(ProductRepositoryApi repository) {
+        this.repository = repository;
+    }
 
     @Override
-    public List<ProductDto> match(MatchTradesCommand command) {
-        throw new NotImplementedException("To be continued");
+    public List<MatchedTradeDto> match(MatchTradesCommand command) {
+        List<ProductDao> productDaoList = repository.getProducts();
+
+        List<Product> productDomainList = ProductConverter.convert(productDaoList);
+
+        return MatchedTradeConverter.convert(productDomainList);
     }
 }

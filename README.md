@@ -36,5 +36,6 @@ date,product_name,currency,price
 # Ideas
 - after analysis, I would name that service: tradeEnricher / tradeEnrichmentService
 - public / package scope approach
-- infrastructure / ui ~ ports/adapters
+- infrastructure / ui ~ similar to ports/adapters
 - C4, plantUml docs
+- Event Storming 

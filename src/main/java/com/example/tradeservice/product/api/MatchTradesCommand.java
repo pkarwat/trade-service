@@ -8,9 +8,9 @@ import java.util.List;
 @Value
 public class MatchTradesCommand {
 
-    List<TradeDto> trades;
+    List<UnmatchedTradeDto> trades;
 
-    public MatchTradesCommand(List<TradeDto> trades) {
+    public MatchTradesCommand(List<UnmatchedTradeDto> trades) {
         this.trades = new ArrayList<>(trades);
     }
 }
