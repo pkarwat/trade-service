@@ -10,6 +10,9 @@ Run app.
 
 To verify if app is up and running, send request to healthcheck using: `docs/management_api.http`. 
 
+# Versioning
+Based on https://semver.org/
+
 # WIP
 Request:
 curl --request POST --data @trade.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv'
