@@ -14,14 +14,13 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UnmatchedTradeCsvImporter {
+
     public static List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
         try (final MappingIterator<UnmatchedTradeDto> readValues = new CsvMapper()
                 .readerFor(UnmatchedTradeDto.class)
                 .with(CsvSchema.emptySchema().withHeader())
                 .readValues(inputStream)) {
-            ArrayList<UnmatchedTradeDto> result = new ArrayList<>(readValues.readAll());
-            System.out.println("SIZEE: " + result);
-            return result;
+            return new ArrayList<>(readValues.readAll());
         } catch (IOException e) {
             //log.error(Parsing unamtched trades csv failed, e);
             throw new RuntimeException(e);  //TODO delete throwing exception, log.error

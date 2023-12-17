@@ -6,11 +6,12 @@ import com.example.tradeservice.shared.MyFileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,13 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@ActiveProfiles("test")
 class EnrichTradeRestControllerTest {
 
     private static final String ENDPOINT_ENRICH = "/api/v1/enrich";
 
     @Autowired
     private WebApplicationContext context;
-    @Mock
+    @MockBean
     private MatchingApi matchingApi;
     private MockMvc mockMvc;
 
@@ -46,7 +48,7 @@ class EnrichTradeRestControllerTest {
     }
 
     @Test
-    void foo() throws Exception {   //TODO delete
+    void getEnrich_return_helloMessage() throws Exception {
         // when then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/enrich"))
                 .andExpect(status().isOk())
