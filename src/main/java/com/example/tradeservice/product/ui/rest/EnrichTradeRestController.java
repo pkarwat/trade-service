@@ -23,7 +23,7 @@ public class EnrichTradeRestController {
     @GetMapping
     ResponseEntity<String> getMatch() {
         System.out.println("get()");
-        return ResponseEntity.status(HttpStatus.OK).body("GET body foo");
+        return ResponseEntity.status(HttpStatus.OK).body("{\"name\": \"hello\"}");
     }
 
     @PostMapping
