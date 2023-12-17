@@ -9,6 +9,6 @@ import java.util.Currency;
 public class MatchedTradeDto {
     String date;    //TODO LocalDate / Date
     String productName;
-    Currency currency;
+    String currency;
     BigDecimal price;
 }

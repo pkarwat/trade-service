@@ -82,7 +82,7 @@ class EnrichTradeRestControllerTest {
 
         // when then
         when(matchingApi.match(any()))
-                .thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", Currency.getInstance("EUR"), BigDecimal.ONE)));
+                .thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", "EUR", BigDecimal.ONE)));
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .multipart(ENDPOINT_ENRICH)
