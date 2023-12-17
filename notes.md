@@ -22,7 +22,12 @@ The JAVA service should be production-quality. This means that we will pay atten
   - [x] the code readability
 
 TASKS:
+DONE
 TEAMA-1 domain
 TEAMA-2 rest api
+
+IN PROGRESS
 TEAMA-3 matching service
+
+BACKLOG
 TEAMA-4 validation

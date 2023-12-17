@@ -24,7 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseEntity<String> handleMultipartException(MultipartException e) {
         log.error("MultipartException occurred: {}", e.getMessage(), e);
         return new ResponseEntity<>(
-                "Unprocessable entity.",
+                e.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY
         );
     }

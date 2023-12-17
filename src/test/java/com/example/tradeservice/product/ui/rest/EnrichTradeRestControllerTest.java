@@ -67,7 +67,7 @@ class EnrichTradeRestControllerTest {
 
         // then
         MultipartException someException = (MultipartException) result.getResolvedException();
-        assertThat(result.getResponse().getContentAsString()).isEqualTo("Unprocessable entity.");
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Current request is not a multipart request");
         assertThat(someException).isInstanceOf(MultipartException.class);
     }
 
