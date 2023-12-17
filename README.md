@@ -76,5 +76,4 @@ TODO
 
 Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
 
-curl -F 'data=@trade.csv' --request POST http://localhost:8080/api/v1/enrich
 curl -F 'file=@trade.csv' --request POST http://localhost:8080/api/v1/enrich

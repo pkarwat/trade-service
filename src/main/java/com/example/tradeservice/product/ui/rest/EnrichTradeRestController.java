@@ -31,7 +31,6 @@ public class EnrichTradeRestController {
     }
 
     @PostMapping(produces = "text/csv")
-//    public ResponseEntity<String> match(@RequestParam("file") final MultipartFile file) {
     public ResponseEntity<FileSystemResource> match(@RequestParam final MultipartFile file) {
         log.info("Handling POST trades csv file.");
 
@@ -47,16 +46,11 @@ public class EnrichTradeRestController {
 
             return ResponseEntity
                     .status(HttpStatus.OK)
-//                    .contentLength("Content-Disposition", "attachment; filename=aaa.csv")
                     .contentLength(outputFile.length())
                     .contentType(MediaType.parseMediaType("text/csv"))
                     .body(new FileSystemResource(outputFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body("Body foo.");
     }
 }

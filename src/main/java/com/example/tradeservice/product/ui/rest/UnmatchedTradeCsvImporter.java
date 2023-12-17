@@ -44,7 +44,7 @@ public class UnmatchedTradeCsvImporter {
             final FileOutputStream fos = new FileOutputStream(tempFile);
             final CsvMapper csvMapper = new CsvMapper();
             csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-            final CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos);
+            final CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos);  //try with resources
             csvGenerator.setSchema(schema);
 
             matchedTrades.forEach(dto -> {
@@ -55,7 +55,6 @@ public class UnmatchedTradeCsvImporter {
                     throw new RuntimeException(e);
                 }
             });
-
             return tempFile;
         } catch (IOException e) {
             throw new RuntimeException(e);
