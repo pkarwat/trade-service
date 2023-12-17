@@ -1,7 +1,7 @@
 package com.example.tradeservice.product;
 
 import com.example.tradeservice.product.api.MatchTradesCommand;
-import com.example.tradeservice.product.api.ProductApi;
+import com.example.tradeservice.product.api.MatchingApi;
 import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.infrastructure.api.ProductDao;
 import com.example.tradeservice.product.infrastructure.api.ProductRepositoryApi;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-class ProductService implements ProductApi {
+class MatchingService implements MatchingApi {
 
     private final ProductRepositoryApi repository;
 
@@ -21,6 +21,8 @@ class ProductService implements ProductApi {
         List<ProductDao> productDaoList = repository.getProducts();
 
         List<Product> productDomainList = ProductConverter.convert(productDaoList);
+
+        // TODO use matcherDomainService
 
         return MatchedTradeConverter.convert(productDomainList);
     }

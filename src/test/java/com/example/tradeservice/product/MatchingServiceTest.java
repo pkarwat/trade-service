@@ -11,10 +11,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ProductServiceTest {
+class MatchingServiceTest {
 
     @Autowired
-    private ProductService productService;
+    private MatchingService productService;
 
     @Test
     void match_returnListOfProducts_whenParamIsAny() {
