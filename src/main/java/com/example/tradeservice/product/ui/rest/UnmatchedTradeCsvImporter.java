@@ -27,7 +27,7 @@ public class UnmatchedTradeCsvImporter {
             return new ArrayList<>(readValues.readAll());
         } catch (IOException e) {
             //log.error(Parsing unamtched trades csv failed, e);
-            throw new RuntimeException(e);  //TODO delete throwing exception, log.error
+            throw new RuntimeException(e);
         }
     }
 
@@ -40,22 +40,24 @@ public class UnmatchedTradeCsvImporter {
                 .build();
 
         try {
-            final File tempFile = File.createTempFile("employee", "csv");
-            final FileOutputStream fos = new FileOutputStream(tempFile);
-            final CsvMapper csvMapper = new CsvMapper();
-            csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-            final CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos);  //try with resources
-            csvGenerator.setSchema(schema);
+            File tempFile = File.createTempFile("employee", "csv");
+            FileOutputStream fos = new FileOutputStream(tempFile);
 
-            matchedTrades.forEach(dto -> {
-                try {
-                    log.debug("Writing: {}", dto);
-                    csvGenerator.writeObject(dto);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            return tempFile;
+            CsvMapper csvMapper = new CsvMapper();
+            try (CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos)) {
+                csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+                csvGenerator.setSchema(schema);
+
+                matchedTrades.forEach(dto -> {
+                    try {
+                        log.debug("Writing: {}", dto);
+                        csvGenerator.writeObject(dto);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                return tempFile;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
