@@ -6,11 +6,14 @@ import com.example.tradeservice.product.api.MatchingApi;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,9 +30,9 @@ public class EnrichTradeRestController {
         return ResponseEntity.status(HttpStatus.OK).body("{\"api\": \"trades matching api\"}");
     }
 
-    @PostMapping
+    @PostMapping(produces = "text/csv")
 //    public ResponseEntity<String> match(@RequestParam("file") final MultipartFile file) {
-    public ResponseEntity<String> match(@RequestParam final MultipartFile file) {
+    public ResponseEntity<FileSystemResource> match(@RequestParam final MultipartFile file) {
         log.info("Handling POST trades csv file.");
 
         try {
@@ -38,12 +41,22 @@ public class EnrichTradeRestController {
 
             List<MatchedTradeDto> matchedTrades = matchingApi.match(new MatchTradesCommand(csvDtoList));
             System.out.println("MOCK : " + matchedTrades + " " + matchedTrades);
+
+            File outputFile = UnmatchedTradeCsvImporter.objToCsv(matchedTrades);
+            System.out.println("FILESIZE: " + outputFile.length());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+//                    .contentLength("Content-Disposition", "attachment; filename=aaa.csv")
+                    .contentLength(outputFile.length())
+                    .contentType(MediaType.parseMediaType("text/csv"))
+                    .body(new FileSystemResource(outputFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Body foo.");
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body("Body foo.");
     }
 }
