@@ -21,10 +21,13 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartException;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.PATH;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +47,6 @@ class EnrichTradeRestControllerTest {
     @BeforeEach
     void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-        Mockito.when(matchingApi.match(any())).thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", null, BigDecimal.ONE)));
     }
 
     @Test
@@ -79,11 +81,16 @@ class EnrichTradeRestControllerTest {
                 MyFileUtils.readCsvFile("src/test/resources/trade/singleTrade.csv"));
 
         // when then
+        when(matchingApi.match(any()))
+                .thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", null, BigDecimal.ONE)));
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .multipart(ENDPOINT_ENRICH)
                         .file(firstFile))
                 .andExpect(status().is(200))
-                .andExpect(content().string("Body foo.")); // TODO assert content
+                .andExpect(content().string("""
+                        date,productName,currency,price
+                        20231217,"Mocked Product Name",,1
+                        """));
     }
 }

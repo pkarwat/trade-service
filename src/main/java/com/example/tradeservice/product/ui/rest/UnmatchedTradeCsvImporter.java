@@ -4,17 +4,19 @@ import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class UnmatchedTradeCsvImporter {
 
     public static List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
@@ -30,23 +32,30 @@ public class UnmatchedTradeCsvImporter {
     }
 
     public static File objToCsv(List<MatchedTradeDto> matchedTrades) {
-        CsvMapper mapper = new CsvMapper();
-        mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-
         CsvSchema schema = CsvSchema.builder().setUseHeader(true)
                 .addColumn("date")
-//                .addColumn("product_name")
-//                .addColumn("currency")
-//                .addColumn("price")
+                .addColumn("productName")
+                .addColumn("currency")
+                .addColumn("price")
                 .build();
 
-        ObjectWriter writer = mapper.writerFor(MatchedTradeDto.class).with(schema);
-
         try {
-            File tempFile = File.createTempFile("employee", "csv");
-            FileOutputStream fos = new FileOutputStream(tempFile);
-            writer.writeValues(fos);
-//            CsvGenerator todo https://dev.to/ratulsharker/csv-generation-from-large-json-response-in-spring-2bnn
+            final File tempFile = File.createTempFile("employee", "csv");
+            final FileOutputStream fos = new FileOutputStream(tempFile);
+            final CsvMapper csvMapper = new CsvMapper();
+            csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+            final CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos);
+            csvGenerator.setSchema(schema);
+
+            matchedTrades.forEach(dto -> {
+                try {
+                    log.debug("Writing: {}", dto);
+                    csvGenerator.writeObject(dto);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
             return tempFile;
         } catch (IOException e) {
             throw new RuntimeException(e);
