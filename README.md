@@ -10,6 +10,9 @@ Run app.
 
 To verify if app is up and running, send request to healthcheck using: `docs/management_api.http`. 
 
+# Versioning
+Based on https://semver.org/
+
 # WIP
 Request:
 curl --request POST --data @trade.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv'
@@ -43,8 +46,34 @@ date,product_name,currency,price
 20160101,Missing Product Name,EUR,35.34
 
 # Ideas
-- after analysis, I would name that service: tradeEnricher / tradeEnrichmentService
-- public / package scope approach
-- infrastructure / ui ~ similar to ports/adapters
+## Architecture
+Based on my experience, current solution is similar to ports and adapters approach. Second solution I was thinking about is to use secondary ports (infrastructure folders in domain level) as a separate modules.
+
+Files structure:
+com.example.tradeservice.domain
+
+#### user-interface package / ui package
+- primary port, entry into my application / domain 
+
+#### infrastructure package
+- secondary port, 3rd party systems
+
+## Documentation
 - C4, plantUml docs
-- Event Storming 
+
+## Naming convention
+After analysis, I would name that service: tradeEnricher / tradeEnrichmentService
+
+## Other
+To get to know domain better and document flow, I would do an Event Storming session. 
+
+
+TODO
+- TimeService as a separate bean to manipulate time in tests
+- public / package scope approach
+- application-test.yaml
+
+
+Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
+
+curl -F 'file=@trade.csv' --request POST http://localhost:8080/api/v1/enrich

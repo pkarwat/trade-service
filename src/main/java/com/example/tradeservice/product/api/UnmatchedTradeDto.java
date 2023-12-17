@@ -1,15 +1,21 @@
 package com.example.tradeservice.product.api;
 
 import com.example.tradeservice.shared.ProductId;
-import lombok.Value;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UnmatchedTradeDto {
     ProductId productId;
-    Instant date;
+    String date;
     String currency;
     BigDecimal price;
 }
