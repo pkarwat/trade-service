@@ -68,6 +68,8 @@ After analysis, I would name that service: tradeEnricher / tradeEnrichmentServic
 To get to know domain better and document flow, I would do an Event Storming session. 
 
 
+TODO
+- TimeService as a separate bean to manipulate time in tests
 - public / package scope approach
 
 

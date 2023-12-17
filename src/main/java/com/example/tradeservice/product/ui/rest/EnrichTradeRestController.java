@@ -32,10 +32,12 @@ public class EnrichTradeRestController {
         System.out.println(" match()");
 
         try {
-            List<UnmatchedTradeDto> unmatchedDtoTrades = UnmatchedTradeCsvImporter.importFromFile(file.getInputStream());
-            List<MatchedTradeDto> matchedTrades = matchingApi.match(new MatchTradesCommand(unmatchedDtoTrades));
+            List<UnmatchedTradeDto> csvDtoList = UnmatchedTradeCsvImporter.importFromFile(file.getInputStream());
+            System.out.println("CSVDtoList: " + csvDtoList);
+
+//            List<MatchedTradeDto> matchedTrades = matchingApi.match(new MatchTradesCommand(unmatchedDtoTrades));
             // TODO response as csv
-            System.out.println("MATCHEDDDD: " + matchedTrades + " " + matchedTrades);
+//            System.out.println("MATCHEDDDD: " + matchedTrades + " " + matchedTrades);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
