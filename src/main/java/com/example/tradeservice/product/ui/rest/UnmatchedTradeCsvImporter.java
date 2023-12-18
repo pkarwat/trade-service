@@ -34,7 +34,7 @@ public class UnmatchedTradeCsvImporter {
     public static File objToCsv(List<MatchedTradeDto> matchedTrades) {
         CsvSchema schema = CsvSchema.builder().setUseHeader(true)
                 .addColumn("date")
-                .addColumn("productName")
+                .addColumn("productName")   //TODO product_name
                 .addColumn("currency")
                 .addColumn("price")
                 .build();

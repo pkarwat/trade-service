@@ -3,6 +3,7 @@ package com.example.tradeservice.product;
 import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
 import com.example.tradeservice.product.infrastructure.api.ProductDao;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,11 @@ import java.util.List;
 @Service
 public class MatchingTradesDomainService {
 
-    List<MatchedTradeDto> match(List<UnmatchedTradeDto> unmatchedTradeDtos, List<ProductDao> products) {
+    @Value("${trade-service.matching.missing-product-productname-placeholder}")
+    private String missingProductName;
+
+    List<MatchedTradeDto> match(List<UnmatchedTradeDto> unmatchedTradeDtos,
+                                List<ProductDao> products) {
 
         return unmatchedTradeDtos.stream()
                 .map(trade -> {
@@ -18,7 +23,11 @@ public class MatchingTradesDomainService {
                             .findFirst()
                             .orElse(null);
 
-                    return new MatchedTradeDto(trade.getDate(), first.getName(), trade.getCurrency(), trade.getPrice());
+                    return new MatchedTradeDto(
+                            trade.getDate(),
+                            first != null ? first.getName() : missingProductName,
+                            trade.getCurrency(),
+                            trade.getPrice());
                 })
                 .toList();
     }

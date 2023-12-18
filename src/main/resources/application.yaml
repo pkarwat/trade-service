@@ -4,3 +4,7 @@ server:
 management:
   server:
     port: 8081
+
+trade-service:
+  matching:
+    missing-product-productname-placeholder: Missing Product Name
