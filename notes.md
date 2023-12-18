@@ -29,7 +29,8 @@ TEAMA-3 matching service
 TEAMA-4 validation
 
 IN PROGRESS
+TEAMA-5 processing csv improvement - verifying spring batch, check matching trades-products improvement
 
 BACKLOG
-TEAMA-5 processing csv improvement - verifying spring batch, check matching trades-products improvement
 TEAMA-6 variable type for date, currency and price
+TEAMA-7 products not hardcoded in repository to manage/inject tests data better
