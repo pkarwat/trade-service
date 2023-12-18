@@ -33,5 +33,4 @@ BACKLOG
 TEAMA-4 validation
 TEAMA-5 processing csv improvement - verifying spring batch, id as long/double
 TEAMA-6 check matching trades-products improvement
-TEAMA-7 double quotation mark in response for product_name
-TEAMA-8 variable type for date, currency and price
+TEAMA-7 variable type for date, currency and price

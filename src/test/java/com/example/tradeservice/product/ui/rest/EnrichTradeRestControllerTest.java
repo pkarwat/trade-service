@@ -87,7 +87,7 @@ class EnrichTradeRestControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(content().string("""
                         date,product_name,currency,price
-                        20231217,"Mocked Product Name",EUR,1
+                        20231217,Mocked Product Name,EUR,1
                         """));
     }
 }
