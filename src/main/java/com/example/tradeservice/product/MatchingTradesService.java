@@ -7,6 +7,7 @@ import com.example.tradeservice.product.infrastructure.api.ProductDao;
 import com.example.tradeservice.product.infrastructure.api.ProductRepositoryApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +22,14 @@ class MatchingTradesService implements MatchingApi {
 
     @Override
     public List<MatchedTradeDto> match(MatchTradesCommand command) {
-        //TODO validation
+        Validate.notNull(command, "MatchTradesCommand must not be null");
+
         log.info("Processing <MatchTradesCommand> to match  {} trades with products.", command.getTrades().size());
         List<ProductDao> productDaoList = repository.getProducts();
 
         // In case of business logic, we would use domain layer`s objects here
         //List<Product> productDomainList = ProductConverter.convert(productDaoList);
+
         return matchingTradesDomainService.match(command.getTrades(), productDaoList);
     }
 }

@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class ProductDao {
-    int id;
+    long id;
     String name;
 }

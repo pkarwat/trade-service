@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UnmatchedTradeDto {
-    int productId;  //long
+    long productId;
     String date;
     String currency;
     BigDecimal price;

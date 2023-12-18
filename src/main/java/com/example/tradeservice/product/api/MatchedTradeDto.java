@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 @Value
 public class MatchedTradeDto {
-    String date;    //TODO LocalDate / Date
+    String date;
     String productName;
     String currency;
     BigDecimal price;
