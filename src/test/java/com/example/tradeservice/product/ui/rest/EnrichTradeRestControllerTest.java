@@ -79,7 +79,11 @@ class EnrichTradeRestControllerTest {
 
         // when then
         when(matchingApi.match(any()))
-                .thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", "EUR", BigDecimal.ONE)));
+                .thenReturn(List.of(
+                        new MatchedTradeDto("20231217", "Mocked Product Name 1", "EUR", BigDecimal.valueOf(1.0)),
+                        new MatchedTradeDto("20231217", "Mocked Product Name 2", "EUR", BigDecimal.valueOf(1.10)),
+                        new MatchedTradeDto("20231217", "Mocked Product Name 3", "EUR", BigDecimal.valueOf(1.11)))
+                );
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .multipart(ENDPOINT_ENRICH)
@@ -87,7 +91,9 @@ class EnrichTradeRestControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(content().string("""
                         date,product_name,currency,price
-                        20231217,Mocked Product Name,EUR,1
+                        20231217,Mocked Product Name 1,EUR,1
+                        20231217,Mocked Product Name 2,EUR,1.1
+                        20231217,Mocked Product Name 3,EUR,1.11
                         """));
     }
 }

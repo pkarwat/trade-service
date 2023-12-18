@@ -20,6 +20,12 @@ import java.util.List;
 public class UnmatchedTradeCsvImporter {
 
     private final CsvMapper csvMapper;
+    private final CsvSchema schema = CsvSchema.builder().setUseHeader(true)
+            .addColumn("date")
+            .addColumn("product_name")
+            .addColumn("currency")
+            .addColumn("price")
+            .build();
 
     public List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
         try (final MappingIterator<UnmatchedTradeDto> readValues = csvMapper
@@ -34,24 +40,22 @@ public class UnmatchedTradeCsvImporter {
     }
 
     public File objToCsv(List<MatchedTradeDto> matchedTrades) {
-        CsvSchema schema = CsvSchema.builder().setUseHeader(true)
-                .addColumn("date")
-                .addColumn("product_name")
-                .addColumn("currency")
-                .addColumn("price")
-                .build();
-
         try {
             File tempFile = File.createTempFile("trade", "csv");
             FileOutputStream fos = new FileOutputStream(tempFile);
-
             try (CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos)) {
                 csvGenerator.setSchema(schema);
-
                 matchedTrades.forEach(dto -> {
                     try {
                         log.debug("Writing: {}", dto);
-                        csvGenerator.writeObject(dto);
+
+                        csvGenerator.writeObject(
+                                new MatchedTradeCsvModel(
+                                        dto.getDate(),
+                                        dto.getProductName(),
+                                        dto.getCurrency(),
+                                        dto.getPrice().stripTrailingZeros().toPlainString())
+                        );
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
