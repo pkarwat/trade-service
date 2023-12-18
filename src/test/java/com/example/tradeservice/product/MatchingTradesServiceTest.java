@@ -4,6 +4,7 @@ import com.example.tradeservice.product.api.MatchTradesCommand;
 import com.example.tradeservice.product.api.MatchTradesCommandFixture;
 import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class MatchingTradesServiceTest {
@@ -49,5 +50,13 @@ class MatchingTradesServiceTest {
         assertThat(result).contains(
                 new MatchedTradeDto("20221218", "Missing Product Name", "EUR", BigDecimal.valueOf(10))
         );
+    }
+
+    @Test
+    void match_throwsNullPointerException_whenParamIsNull() {
+        // when
+        assertThatThrownBy(() -> productService.match(null))
+                .isExactlyInstanceOf(NullPointerException.class)
+                .hasMessage("MatchTradesCommand must not be null");
     }
 }
