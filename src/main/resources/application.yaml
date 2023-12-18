@@ -8,3 +8,8 @@ management:
 trade-service:
   matching:
     missing-product-productname-placeholder: Missing Product Name
+
+logging:
+  level:
+    com.example.tradeservice: INFO
+
