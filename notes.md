@@ -25,9 +25,9 @@ TASKS:
 DONE
 TEAMA-1 domain
 TEAMA-2 rest api
+TEAMA-3 matching service
 
 IN PROGRESS
-TEAMA-3 matching service
 
 BACKLOG
 TEAMA-4 validation
