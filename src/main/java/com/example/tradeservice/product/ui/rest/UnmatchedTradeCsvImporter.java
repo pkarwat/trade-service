@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class UnmatchedTradeCsvImporter {
+class UnmatchedTradeCsvImporter {
 
     private final CsvMapper csvMapper;
     private final CsvSchema schema = CsvSchema.builder().setUseHeader(true)
@@ -27,7 +27,7 @@ public class UnmatchedTradeCsvImporter {
             .addColumn("price")
             .build();
 
-    public List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
+    List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
         try (final MappingIterator<UnmatchedTradeDto> readValues = csvMapper
                 .readerFor(UnmatchedTradeDto.class)
                 .with(CsvSchema.emptySchema().withHeader())
@@ -39,7 +39,7 @@ public class UnmatchedTradeCsvImporter {
         }
     }
 
-    public File objToCsv(List<MatchedTradeDto> matchedTrades) {
+    File objToCsv(List<MatchedTradeDto> matchedTrades) {
         try {
             File tempFile = File.createTempFile("trade", "csv");
             FileOutputStream fos = new FileOutputStream(tempFile);

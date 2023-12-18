@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MatchingTradesDomainService {
+class MatchingTradesDomainService {
 
     @Value("${trade-service.matching.missing-product-productname-placeholder}")
     private String missingProductName;
