@@ -38,7 +38,7 @@ class MatchingTradesDomainService {
                 .toList();
     }
 
-    private ProductDao getProductFor(List<ProductDao> products, int productId) {
+    private ProductDao getProductFor(List<ProductDao> products, long productId) {
         return products.stream()
                 .filter(p -> p.getId() == productId)
                 .findFirst()

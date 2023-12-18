@@ -41,7 +41,8 @@ class MatchingTradesServiceTest {
     @Test
     void match_returnListWithTrade_whenPassingNonMatchingTrade() {
         // given
-        List<UnmatchedTradeDto> nonMatchingTrade = List.of(new UnmatchedTradeDto(11, "20221218", "EUR", BigDecimal.valueOf(10)));
+        long nonMatchingId = 11;
+        List<UnmatchedTradeDto> nonMatchingTrade = List.of(new UnmatchedTradeDto(nonMatchingId, "20221218", "EUR", BigDecimal.valueOf(10)));
         MatchTradesCommand command = new MatchTradesCommand(nonMatchingTrade);
         // when
         List<MatchedTradeDto> result = productService.match(command);
