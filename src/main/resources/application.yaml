@@ -1,5 +1,8 @@
 server:
   port: 8080
+#  tomcat:
+#    max-swallow-size: 300MB
+#    max-http-form-post-size: 300MB
 
 management:
   server:
@@ -12,4 +15,3 @@ trade-service:
 logging:
   level:
     com.example.tradeservice: INFO
-
