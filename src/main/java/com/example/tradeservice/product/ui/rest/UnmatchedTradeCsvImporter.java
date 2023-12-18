@@ -2,25 +2,33 @@ package com.example.tradeservice.product.ui.rest;
 
 import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Slf4j
-public class UnmatchedTradeCsvImporter {
+@Service
+class UnmatchedTradeCsvImporter {
 
-    public static List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
-        try (final MappingIterator<UnmatchedTradeDto> readValues = new CsvMapper()
+    private final CsvMapper csvMapper;
+    private final CsvSchema schema = CsvSchema.builder().setUseHeader(true)
+            .addColumn("date")
+            .addColumn("product_name")
+            .addColumn("currency")
+            .addColumn("price")
+            .build();
+
+    List<UnmatchedTradeDto> importFromFile(InputStream inputStream) {
+        try (final MappingIterator<UnmatchedTradeDto> readValues = csvMapper
                 .readerFor(UnmatchedTradeDto.class)
                 .with(CsvSchema.emptySchema().withHeader())
                 .readValues(inputStream)) {
@@ -31,27 +39,23 @@ public class UnmatchedTradeCsvImporter {
         }
     }
 
-    public static File objToCsv(List<MatchedTradeDto> matchedTrades) {
-        CsvSchema schema = CsvSchema.builder().setUseHeader(true)
-                .addColumn("date")
-                .addColumn("productName")
-                .addColumn("currency")
-                .addColumn("price")
-                .build();
-
+    File objToCsv(List<MatchedTradeDto> matchedTrades) {
         try {
-            File tempFile = File.createTempFile("employee", "csv");
+            File tempFile = File.createTempFile("trade", "csv");
             FileOutputStream fos = new FileOutputStream(tempFile);
-
-            CsvMapper csvMapper = new CsvMapper();
             try (CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos)) {
-                csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
                 csvGenerator.setSchema(schema);
-
                 matchedTrades.forEach(dto -> {
                     try {
                         log.debug("Writing: {}", dto);
-                        csvGenerator.writeObject(dto);
+
+                        csvGenerator.writeObject(
+                                new MatchedTradeCsvModel(
+                                        dto.getDate(),
+                                        dto.getProductName(),
+                                        dto.getCurrency(),
+                                        dto.getPrice().stripTrailingZeros().toPlainString())
+                        );
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

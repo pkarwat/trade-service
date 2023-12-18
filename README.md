@@ -67,13 +67,8 @@ After analysis, I would name that service: tradeEnricher / tradeEnrichmentServic
 ## Other
 To get to know domain better and document flow, I would do an Event Storming session. 
 
-
 TODO
 - TimeService as a separate bean to manipulate time in tests
 - public / package scope approach
-- application-test.yaml
-
 
 Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
-
-curl -F 'file=@trade.csv' --request POST http://localhost:8080/api/v1/enrich

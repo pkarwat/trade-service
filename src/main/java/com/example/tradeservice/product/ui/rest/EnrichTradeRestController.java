@@ -21,9 +21,10 @@ import java.util.List;
 @RequestMapping("/api/v1/enrich")
 @RequiredArgsConstructor
 @Slf4j
-public class EnrichTradeRestController {
+class EnrichTradeRestController {
 
     private final MatchingApi matchingApi;
+    private final UnmatchedTradeCsvImporter csvImporter;
 
     @GetMapping
     ResponseEntity<String> getMatch() {
@@ -31,18 +32,16 @@ public class EnrichTradeRestController {
     }
 
     @PostMapping(produces = "text/csv")
-    public ResponseEntity<FileSystemResource> match(@RequestParam final MultipartFile file) {
+    ResponseEntity<FileSystemResource> match(@RequestParam final MultipartFile file) {
         log.info("Handling POST trades csv file.");
 
         try {
-            List<UnmatchedTradeDto> csvDtoList = UnmatchedTradeCsvImporter.importFromFile(file.getInputStream());
+            List<UnmatchedTradeDto> csvDtoList = csvImporter.importFromFile(file.getInputStream());
             log.debug("CSV input data: {}", csvDtoList);
 
             List<MatchedTradeDto> matchedTrades = matchingApi.match(new MatchTradesCommand(csvDtoList));
-            System.out.println("MOCK : " + matchedTrades + " " + matchedTrades);
 
-            File outputFile = UnmatchedTradeCsvImporter.objToCsv(matchedTrades);
-            System.out.println("FILESIZE: " + outputFile.length());
+            File outputFile = csvImporter.objToCsv(matchedTrades);
 
             return ResponseEntity
                     .status(HttpStatus.OK)

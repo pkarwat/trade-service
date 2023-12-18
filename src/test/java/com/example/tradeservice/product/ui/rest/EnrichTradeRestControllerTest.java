@@ -6,7 +6,6 @@ import com.example.tradeservice.shared.MyFileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,11 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartException;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.PATH;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -67,7 +64,7 @@ class EnrichTradeRestControllerTest {
 
         // then
         MultipartException someException = (MultipartException) result.getResolvedException();
-        assertThat(result.getResponse().getContentAsString()).isEqualTo("Unprocessable entity.");
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Current request is not a multipart request");
         assertThat(someException).isInstanceOf(MultipartException.class);
     }
 
@@ -82,15 +79,21 @@ class EnrichTradeRestControllerTest {
 
         // when then
         when(matchingApi.match(any()))
-                .thenReturn(List.of(new MatchedTradeDto("20231217", "Mocked Product Name", Currency.getInstance("EUR"), BigDecimal.ONE)));
+                .thenReturn(List.of(
+                        new MatchedTradeDto("20231217", "Mocked Product Name 1", "EUR", BigDecimal.valueOf(1.0)),
+                        new MatchedTradeDto("20231217", "Mocked Product Name 2", "EUR", BigDecimal.valueOf(1.10)),
+                        new MatchedTradeDto("20231217", "Mocked Product Name 3", "EUR", BigDecimal.valueOf(1.11)))
+                );
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .multipart(ENDPOINT_ENRICH)
                         .file(firstFile))
                 .andExpect(status().is(200))
                 .andExpect(content().string("""
-                        date,productName,currency,price
-                        20231217,"Mocked Product Name",EUR,1
+                        date,product_name,currency,price
+                        20231217,Mocked Product Name 1,EUR,1
+                        20231217,Mocked Product Name 2,EUR,1.1
+                        20231217,Mocked Product Name 3,EUR,1.11
                         """));
     }
 }

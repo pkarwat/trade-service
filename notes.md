@@ -1,7 +1,7 @@
 # Goal
 The candidate will implement a JAVA service, which will :
 - [x] expose an API to enrich trade data (trade.csv) with product names from the static data file (product.csv)
-- [ ] translate the product_id into product_name
+- [x] translate the product_id into product_name
 - [ ] perform data validation
   - [ ] ensure that date is a valid date in YYYYMMDD format, otherwise discard the row and log an error
   - [ ] if the product name is not available, we should still log the missing mapping and set the product Name as "Missing Product Name"
@@ -22,7 +22,15 @@ The JAVA service should be production-quality. This means that we will pay atten
   - [x] the code readability
 
 TASKS:
+DONE
 TEAMA-1 domain
 TEAMA-2 rest api
 TEAMA-3 matching service
+
+IN PROGRESS
+
+BACKLOG
 TEAMA-4 validation
+TEAMA-5 processing csv improvement - verifying spring batch, id as long/double
+TEAMA-6 check matching trades-products improvement
+TEAMA-7 variable type for date, currency and price
