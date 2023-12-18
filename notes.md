@@ -4,7 +4,7 @@ The candidate will implement a JAVA service, which will :
 - [x] translate the product_id into product_name
 - [ ] perform data validation
   - [ ] ensure that date is a valid date in YYYYMMDD format, otherwise discard the row and log an error
-  - [ ] if the product name is not available, we should still log the missing mapping and set the product Name as "Missing Product Name"
+  - [x] if the product name is not available, we should still log the missing mapping and set the product Name as "Missing Product Name"
 
 # Technical constraints :
 - [x] Please use Spring boot 3+

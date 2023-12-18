@@ -3,12 +3,14 @@ package com.example.tradeservice.product;
 import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
 import com.example.tradeservice.product.infrastructure.api.ProductDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 class MatchingTradesDomainService {
 
     @Value("${trade-service.matching.missing-product-productname-placeholder}")
@@ -19,13 +21,17 @@ class MatchingTradesDomainService {
 
         return unmatchedTradeDtos.stream()
                 .map(trade -> {
-                    ProductDao first = products.stream().filter(p -> p.getId() == trade.getProductId())
+                    ProductDao productDao = products.stream()
+                            .filter(p -> p.getId() == trade.getProductId())
                             .findFirst()
-                            .orElse(null);
+                            .orElseGet(() -> {
+                                log.error("Cannot found product for productId: <{}>", trade.getProductId());
+                                return null;
+                            });
 
                     return new MatchedTradeDto(
                             trade.getDate(),
-                            first != null ? first.getName() : missingProductName,
+                            productDao != null ? productDao.getName() : missingProductName,
                             trade.getCurrency(),
                             trade.getPrice());
                 })
