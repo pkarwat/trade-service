@@ -21,7 +21,8 @@ class MatchingTradesService implements MatchingApi {
 
     @Override
     public List<MatchedTradeDto> match(MatchTradesCommand command) {
-        log.info("Processing <MatchTradesCommand> to match with products.");
+        //TODO validation
+        log.info("Processing <MatchTradesCommand> to match  {} trades with products.", command.getTrades().size());
         List<ProductDao> productDaoList = repository.getProducts();
 
         // In case of business logic, we would use domain layer`s objects here
