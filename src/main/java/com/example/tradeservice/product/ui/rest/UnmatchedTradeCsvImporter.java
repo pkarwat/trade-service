@@ -4,6 +4,7 @@ import com.example.tradeservice.product.api.MatchedTradeDto;
 import com.example.tradeservice.product.api.UnmatchedTradeDto;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -34,7 +35,7 @@ public class UnmatchedTradeCsvImporter {
     public static File objToCsv(List<MatchedTradeDto> matchedTrades) {
         CsvSchema schema = CsvSchema.builder().setUseHeader(true)
                 .addColumn("date")
-                .addColumn("productName")   //TODO product_name
+                .addColumn("product_name")   //TODO product_name
                 .addColumn("currency")
                 .addColumn("price")
                 .build();
@@ -46,6 +47,7 @@ public class UnmatchedTradeCsvImporter {
             CsvMapper csvMapper = new CsvMapper();
             try (CsvGenerator csvGenerator = csvMapper.getFactory().createGenerator(fos)) {
                 csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+                csvMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
                 csvGenerator.setSchema(schema);
 
                 matchedTrades.forEach(dto -> {
