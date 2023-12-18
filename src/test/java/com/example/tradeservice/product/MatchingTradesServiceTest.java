@@ -59,4 +59,18 @@ class MatchingTradesServiceTest {
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasMessage("MatchTradesCommand must not be null");
     }
+
+    @Test
+    void match_skipIncorrectDateElements() {
+        //given
+        final String invalidDate = "20221311";
+        MatchTradesCommand command = new MatchTradesCommand(List.of(
+                new UnmatchedTradeDto(1, invalidDate, "EUR", BigDecimal.valueOf(10)),
+                new UnmatchedTradeDto(2, "20221218", "EUR", BigDecimal.valueOf(10))));
+        // when
+        List<MatchedTradeDto> result = productService.match(command);
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0)).isEqualTo(new MatchedTradeDto("20221218", "Corporate Bonds Domestic", "EUR", BigDecimal.valueOf(10)));
+    }
 }

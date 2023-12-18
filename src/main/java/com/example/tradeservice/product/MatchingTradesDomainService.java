@@ -21,13 +21,12 @@ class MatchingTradesDomainService {
 
         return unmatchedTradeDtos.stream()
                 .map(trade -> {
-                    ProductDao productDao = products.stream()
-                            .filter(p -> p.getId() == trade.getProductId())
-                            .findFirst()
-                            .orElseGet(() -> {
-                                log.error("Cannot found product for productId: <{}>", trade.getProductId());
-                                return null;
-                            });
+                    if (!TradeDateValidator.isValid(trade.getDate())) {
+                        log.error("Invalid date <{}> for trade with product_id <{}>", trade.getDate(), trade.getProductId());
+                        return null;
+                    }
+
+                    ProductDao productDao = getProductFor(products, trade.getProductId());
 
                     return new MatchedTradeDto(
                             trade.getDate(),
@@ -35,6 +34,17 @@ class MatchingTradesDomainService {
                             trade.getCurrency(),
                             trade.getPrice());
                 })
+                .filter(correctDateTrade -> correctDateTrade != null)
                 .toList();
+    }
+
+    private ProductDao getProductFor(List<ProductDao> products, int productId) {
+        return products.stream()
+                .filter(p -> p.getId() == productId)
+                .findFirst()
+                .orElseGet(() -> {
+                    log.error("Cannot found product for productId: <{}>", productId);
+                    return null;
+                });
     }
 }
