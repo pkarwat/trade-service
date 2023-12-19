@@ -44,8 +44,10 @@ TODO
 
 # WIP
 Request:
-curl --request POST --data @trade.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv'
-http://server.com/api/v1/enrich
+curl --request POST --data @trade.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv' http://server.com/api/v1/enrich
+curl --request POST --data @trade_large.csv --header 'Content-Type: text/csv' --header 'Accept: text/csv' http://localhost:8080/api/v1/enrich
+
+curl -F 'file=@trade.csv' --request POST http://localhost:8080/api/v1/enrich
 
 trade.csv:
 date,product_id,currency,price

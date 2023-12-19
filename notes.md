@@ -31,6 +31,10 @@ TEAMA-4 validation
 IN PROGRESS
 TEAMA-5 processing csv improvement - verifying spring batch, check matching trades-products improvement
 
+short summary:
+Processing ~1_000_000 trades took ~8s. To support large files MultipartConfigElementConfiguration need to be configured.
+After short analysis, there are few possible solutions to implement more efficient api like spring batch, parallel stream for better processing or stream as input not to pass whole csv at once and not to create temp file in memory.
+
 BACKLOG
 TEAMA-6 variable type for date, currency and price
 TEAMA-7 products not hardcoded in repository to manage/inject tests data better
