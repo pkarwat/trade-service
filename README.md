@@ -6,12 +6,41 @@ Service allows to enrich input trades collection with products data.
 mvn clean install
 ```
 
-Run app.
+Edit configurations -> Add "Spring Boot" -> set MainClass: com.example.tradeservice.TradeServiceApplication
 
-To verify if app is up and running, send request to healthcheck using: `docs/management_api.http`. 
+Run app from IDE.
+
+To verify if app is up and running, send request to healthcheck using: `docs/management_api.http`.
+
+To verify rest api requests run: `docs/trade_matching_api.http`
 
 # Versioning
 Based on https://semver.org/
+
+# Ideas
+## Architecture
+Based on my experience, current solution is similar to ports and adapters approach. Second solution I was thinking about is to use secondary ports (infrastructure folders in domain level) as a separate modules.
+
+Files structure:
+com.example.tradeservice.domain
+
+#### user-interface package / ui package
+- primary port, entry into my application / domain 
+
+#### infrastructure package
+- secondary port, 3rd party systems
+
+## Documentation
+- C4, plantUml docs
+
+## Naming convention
+After analysis, I would name that service: tradeEnricher / tradeEnrichmentService
+
+## Other
+To get to know domain better and document flow, I would do an Event Storming session. 
+
+TODO
+- TimeService as a separate bean to manipulate time in tests
 
 # WIP
 Request:
@@ -44,31 +73,5 @@ date,product_name,currency,price
 20160101,Corporate Bonds Domestic,EUR,20.1
 20160101,REPO Domestic,EUR,30.34
 20160101,Missing Product Name,EUR,35.34
-
-# Ideas
-## Architecture
-Based on my experience, current solution is similar to ports and adapters approach. Second solution I was thinking about is to use secondary ports (infrastructure folders in domain level) as a separate modules.
-
-Files structure:
-com.example.tradeservice.domain
-
-#### user-interface package / ui package
-- primary port, entry into my application / domain 
-
-#### infrastructure package
-- secondary port, 3rd party systems
-
-## Documentation
-- C4, plantUml docs
-
-## Naming convention
-After analysis, I would name that service: tradeEnricher / tradeEnrichmentService
-
-## Other
-To get to know domain better and document flow, I would do an Event Storming session. 
-
-TODO
-- TimeService as a separate bean to manipulate time in tests
-- public / package scope approach
 
 Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
